@@ -6,3 +6,7 @@ header {
 body {
     background-color: gray;
 }
+
+.card {
+    margin: auto;
+}
