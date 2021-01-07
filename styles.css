@@ -3,10 +3,14 @@ header {
     text-align: center;
 }
 
-/* body {
-    background-color: gray;
-} */
+body {
+    background-color: lightgray;
+}
 
 .card {
     margin: auto;
+}
+
+#weather-today {
+    float: right;
 }
