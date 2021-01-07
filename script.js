@@ -14,6 +14,7 @@ var mainCol = $(".main-column");
 // search bar
 $("#submit-button").on("click", function(event) {
     event.preventDefault();
+    
     document.querySelector(".main-column").hidden = false;
 
     var queryURL = "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/forecast?q=" + citySearch.val() + "&units=imperial&appid=3d8a9db33d6081c4a896f43ab9165e4d"
@@ -28,7 +29,7 @@ $("#submit-button").on("click", function(event) {
         showWeatherToday(response);
         weatherWeek(response);
     });
-    
+    citySearch.val("")
 });
 
 function addHistory(cityToSave) {
@@ -36,16 +37,13 @@ function addHistory(cityToSave) {
     localStorage.setItem("cityHistory", JSON.stringify(cityArr));
     showHistory();
 }
-
+// work on me
 function showHistory() {
     cityList = JSON.parse(localStorage.getItem("cityHistory"))
-    document.querySelector(".city-storage").clear()
     // search for , and make a new card for each ,
-    for (i = 0; i < cityList.length; i++) {
         var p = $("<h6>");
-        p.text(cityList[i]);
+        p.text(cityList);
         $(".city-storage").prepend(p);
-    }
 }
 
 function showWeatherToday(response) {
