@@ -68,7 +68,7 @@ $(".history-btn").on("click", function(event) {
 function showWeatherToday(response) {
     cityName.text(response.city.name);
     dateToday.text(response.list[0].dt_txt);
-    weatherToday.attr("src", "http://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + "@2x.png");
+    weatherToday.attr("src", "https://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + "@2x.png");
     cityTemp.text("Temperature: " + response.list[0].main.temp + "° F");
     humidity.text("Humidity: " + response.list[0].main.humidity + "%");
     windSpeed.text("Windspeed: " + response.list[0].wind.speed + "MPH");
@@ -76,7 +76,7 @@ function showWeatherToday(response) {
     var lon = response.city.coord.lon
     console.log(lat)
     console.log(lon)
-    var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3d8a9db33d6081c4a896f43ab9165e4d"
+    var UVqueryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3d8a9db33d6081c4a896f43ab9165e4d"
 
     $.ajax({
         url: UVqueryURL,
@@ -105,7 +105,7 @@ function weatherWeek(response) {
         // date
         $("#forecast-date" + j).text(response.list[i].dt_txt);
         // weather icon
-        $("#forecast-img" + j).attr("src", "http://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + "@2x.png");
+        $("#forecast-img" + j).attr("src", "https://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + "@2x.png");
         // // temp
         $("#forecast-temp" + j).text("Temp: " + response.list[i].main.temp + "° F");
         // humidity
