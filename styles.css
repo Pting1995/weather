@@ -14,3 +14,13 @@ body {
 #weather-today {
     float: right;
 }
+
+.danger {
+    background-color: red;
+}
+.beware {
+    background-color: yellow;
+}
+.safe {
+    background-color: greenyellow;
+}

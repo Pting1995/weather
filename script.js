@@ -7,7 +7,7 @@ var weatherToday = $("#weather-today");
 var cityTemp = $("#temp");
 var humidity = $("#humidity");
 var windSpeed = $("#wind-speed");
-// var UVIndex = $("#uv-index");
+var UVIndex = $("#UVIndex");
 var futureWeather = $("#future-weather");
 var mainCol = $(".main-column");
 
@@ -28,10 +28,12 @@ $("#submit-button").on("click", function(event) {
         addHistory(citySearch.val());
         showWeatherToday(response);
         weatherWeek(response);
+        UVIndex.removeClass("safe beware danger")
     });
     
 });
 
+// adds submitted cities to local storage
 function addHistory(cityToSave) {
     cityArr.push(cityToSave);
     console.log(cityArr)
@@ -39,19 +41,27 @@ function addHistory(cityToSave) {
     localStorage.setItem("cityHistory", JSON.stringify(cityArr));
     showHistory();
 }
-// work on me
+
+// shows search history
 function showHistory() {
     var cityList = JSON.parse(localStorage.getItem("cityHistory"))
     // search for , and make a new card for each ,
+    var div = $("<div>")
     var button = $("<button>")
-    button.attr("Type", "button")
     button.addClass("btn btn-outline-primary")
-    button.attr("id", "")
+    button.attr("value", cityList[cityList.length - 1])
     button.text(cityList[cityList.length - 1]);
-    $(".city-storage").prepend(button);
-    citySearch.val("")
+    div.append(button)
+    $(".city-storage").prepend(div);
+    // citySearch.val("")
 }
 
+// $(".btn").on("click", function(event) {
+//     event.preventDefault();
+//     citySearch.text(button.val())
+// })
+
+// shows todays weather
 function showWeatherToday(response) {
     cityName.text(response.city.name);
     dateToday.text(response.list[0].dt_txt);
@@ -59,9 +69,32 @@ function showWeatherToday(response) {
     cityTemp.text("Temperature: " + response.list[0].main.temp + "° F");
     humidity.text("Humidity: " + response.list[0].main.humidity + "%");
     windSpeed.text("Windspeed: " + response.list[0].wind.speed + "MPH");
-    // UVIndex.text(response.list[0].dt_txt)
+    var lat = response.city.coord.lat
+    var lon = response.city.coord.lon
+    console.log(lat)
+    console.log(lon)
+    var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3d8a9db33d6081c4a896f43ab9165e4d"
+
+    $.ajax({
+        url: UVqueryURL,
+        method: "GET"
+    }).then(function(responseUV) {
+        UVIndex.text("UV Index: " + responseUV.value)
+        if (responseUV.value < 2) {
+            UVIndex.addClass("safe")
+        }
+        else if (responseUV.value < 5) {
+            UVIndex.addClass("beware")
+        }
+        else {
+            UVIndex.addClass("danger")
+        }
+
+        console.log(responseUV)
+    });
 }
 
+// shows 5 day forecast
 function weatherWeek(response) {
     var j = 0
     for (i = 7; i <= 39; i = i + 8){
