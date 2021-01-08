@@ -13,6 +13,11 @@ var mainCol = $(".main-column");
 
 // search bar
 $("#submit-button").on("click", function(event) {
+    search(event);
+});
+
+
+function search(event) {
     event.preventDefault();
     
     document.querySelector(".main-column").hidden = false;
@@ -30,14 +35,11 @@ $("#submit-button").on("click", function(event) {
         weatherWeek(response);
         UVIndex.removeClass("safe beware danger")
     });
-    
-});
+}
 
 // adds submitted cities to local storage
 function addHistory(cityToSave) {
     cityArr.push(cityToSave);
-    console.log(cityArr)
-    console.log(cityToSave)
     localStorage.setItem("cityHistory", JSON.stringify(cityArr));
     showHistory();
 }
@@ -48,18 +50,19 @@ function showHistory() {
     // search for , and make a new card for each ,
     var div = $("<div>")
     var button = $("<button>")
-    button.addClass("btn btn-outline-primary")
-    button.attr("value", cityList[cityList.length - 1])
+    button.addClass("btn history-btn btn-outline-primary")
     button.text(cityList[cityList.length - 1]);
     div.append(button)
     $(".city-storage").prepend(div);
     // citySearch.val("")
 }
 
-// $(".btn").on("click", function(event) {
-//     event.preventDefault();
-//     citySearch.text(button.val())
-// })
+$(".history-btn").on("click", function(event) {
+    event.preventDefault();
+    search(event);
+    // citySearch.text($(this).text())
+    // citySearch = input box
+})
 
 // shows todays weather
 function showWeatherToday(response) {

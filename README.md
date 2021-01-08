@@ -1,44 +1,70 @@
-# 06 Server-Side APIs: Weather Dashboard
+# Weather Dashboard
 
-Developers are often tasked with retrieving data from another application's API and using it in the context of their own. Third-party APIs allow developers to access their data and functionality by making requests with specific parameters to a URL. Your challenge is to build a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
+![Site picture](Assets/Capture.PNG)
 
-Use the [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities. The documentation includes a section called "How to start" that will provide basic setup and usage instructions. Use `localStorage` to store any persistent data.
+This site was made to tell the user about a given city's weather. Upon opening the webpage, the user will find an input field. Any city typed into the input field will be put into an API and todays weather will be shown on screen along with temperature, humidity, windspeed, and UV index. Below that the user will find a 5-day forecast where they can find the date, the weather, the temperature, and the humidity. If the user wants to search a new city in the input field they can. The days weather report and the 5 day forecast will also be updated. As of right now you can't click on the city history buttons to re-route you to that city, but i hope to add it in the future!
 
-## User Story
+## Snips of code
 
-```
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
-```
-
-## Acceptance Criteria
+Below is a code snippet of the local storage that is stored in an array then turned into a string to be able to be stored in local storage.
 
 ```
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, the wind speed, and the UV index
-WHEN I view the UV index
-THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
+function addHistory(cityToSave) {
+    cityArr.push(cityToSave);
+    localStorage.setItem("cityHistory", JSON.stringify(cityArr));
+    showHistory();
+}
 ```
 
-The following image demonstrates the application functionality:
+The code snippet below shows how the UV Index was obtained, and how the background color was changed.
 
-![weather dashboard demo](./Assets/06-server-side-apis-homework-demo.png)
+```
+var UVqueryURL = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&appid=3d8a9db33d6081c4a896f43ab9165e4d"
 
-## Review
+$.ajax({
+        url: UVqueryURL,
+        method: "GET"
+    }).then(function(responseUV) {
+        UVIndex.text("UV Index: " + responseUV.value)
+        if (responseUV.value < 2) {
+            UVIndex.addClass("safe")
+        }
+        else if (responseUV.value < 5) {
+            UVIndex.addClass("beware")
+        }
+        else {
+            UVIndex.addClass("danger")
+        }
 
-You are required to submit the following for review:
+        console.log(responseUV)
+    });
+```
 
-* The URL of the deployed application.
+## Built With
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
+* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+* [JS](https://www.javascript.com/)
+* [GitHub](https://github.com/)
+* [Git](https://git-scm.com/)
+* [Bootstrap](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+* [Openweathermap's API](https://openweathermap.org/api)
 
-- - -
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+## Deployed Link
+
+* [See Live Site](https://pting1995.github.io/weather/)
+
+## Authors
+
+* Peter Ting
+
+- [Link to Github](https://github.com/Pting1995)
+- [Link to LinkedIn](https://www.linkedin.com/in/pting002/)
+
+## License
+
+This project is licensed under the MIT License 
+
+## Acknowledgments
+
+* Thank you to UC Berkeley's Extension Bootcamp for giving me the opportunity to work on this project!
