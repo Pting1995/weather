@@ -7,7 +7,7 @@ var weatherToday = $("#weather-today");
 var cityTemp = $("#temp");
 var humidity = $("#humidity");
 var windSpeed = $("#wind-speed");
-var UVIndex = $("#uv-index");
+// var UVIndex = $("#uv-index");
 var futureWeather = $("#future-weather");
 var mainCol = $(".main-column");
 
@@ -17,7 +17,7 @@ $("#submit-button").on("click", function(event) {
     
     document.querySelector(".main-column").hidden = false;
 
-    var queryURL = "https://cors-anywhere.herokuapp.com/api.openweathermap.org/data/2.5/forecast?q=" + citySearch.val() + "&units=imperial&appid=3d8a9db33d6081c4a896f43ab9165e4d"
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch.val() + "&units=imperial&appid=3d8a9db33d6081c4a896f43ab9165e4d"
 
     $.ajax({
         url: queryURL,
@@ -29,21 +29,27 @@ $("#submit-button").on("click", function(event) {
         showWeatherToday(response);
         weatherWeek(response);
     });
-    citySearch.val("")
+    
 });
 
 function addHistory(cityToSave) {
     cityArr.push(cityToSave);
+    console.log(cityArr)
+    console.log(cityToSave)
     localStorage.setItem("cityHistory", JSON.stringify(cityArr));
     showHistory();
 }
 // work on me
 function showHistory() {
-    cityList = JSON.parse(localStorage.getItem("cityHistory"))
+    var cityList = JSON.parse(localStorage.getItem("cityHistory"))
     // search for , and make a new card for each ,
-        var p = $("<h6>");
-        p.text(cityList);
-        $(".city-storage").prepend(p);
+    var button = $("<button>")
+    button.attr("Type", "button")
+    button.addClass("btn btn-outline-primary")
+    button.attr("id", "")
+    button.text(cityList[cityList.length - 1]);
+    $(".city-storage").prepend(button);
+    citySearch.val("")
 }
 
 function showWeatherToday(response) {
@@ -65,10 +71,8 @@ function weatherWeek(response) {
         // weather icon
         $("#forecast-img" + j).attr("src", "http://openweathermap.org/img/wn/" + response.list[i].weather[0].icon + "@2x.png");
         // // temp
-        $("#forecast-temp" + j).text("Temp: " + response.list[i].main.temp);
+        $("#forecast-temp" + j).text("Temp: " + response.list[i].main.temp + "° F");
         // humidity
         $("#forecast-humidity" + j).text("Humidity: " + response.list[i].main.humidity + "%");
     }
 }
-
-showHistory()
